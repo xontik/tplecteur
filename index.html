@@ -11,14 +11,24 @@
       <h1>Best Player Ever !</h1>
       <div id="media">
         <h2></h2>
-        <video></video>
-      </div>
+        <video id="player"></video>
+        <br>
+        <button id="playButton">Play</button>
+        <button><</button>
+        <button>></button>
+        <button>Mute</button>
+
+      </div>  
       <div id="playlist">
-        <select multiple>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
+        <h2></h2>
+        <select multiple id="list">
         </select>
+        <br>
+        <button id="remove">Supprimer</button>
+        <button id="upButton">up</button>
+        <button id="downButton">down</button>
+        <br>
+        <input type="url" name="url" id="urlInput"><button id="loadButton">Charger URL</button>
       </div>
     </main>
     <script type="text/javascript" src="./script.js">
