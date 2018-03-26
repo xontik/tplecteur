@@ -6,3 +6,16 @@
 .playing {
 	background: red;
 }
+
+#progressbar {
+	width:300px;
+	height:20px;
+	background: grey;
+	padding: 0;
+}
+#progress{
+	width: 0%;
+	height:20px;
+	background: green;
+	margin:0;
+}

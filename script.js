@@ -1,26 +1,71 @@
 // Vanilla
 /*jshint esversion: 6 */
-let list = document.getElementById('list');
-    let player = document.getElementById('player');
-    let loadButton = document.getElementById('loadButton');
-    let urlInput = document.getElementById('urlInput');
-    let listData = [];
-    let playistTitle = document.querySelector('#playlist > h2');
-    let removeButton = document.querySelector("#remove");
-    let upButton = document.querySelector("#upButton");
-    let downButton = document.querySelector("#downButton");
-    let currentPlaying = null;
-    let playButton = document.querySelector("#playButton");
+let list = null;
+let player = null;
+let loadButton = null;
+let urlInput = null;
+let listData = null;
+let playistTitle = null;
+let removeButton = null;
+let upButton = null;
+let downButton = null;
+let currentPlaying = null;
+let playButton = null;
+let prevButton = null; 
+let nextButton = null;
+let timer = null;
+let progress = null;
+let progressbar = null;
+function pad(n) {
+    return (n < 10) ? ("0" + Math.trunc(n)): Math.trunc(n);
+}
+function secondToReadable(s){
+    let hours = s / 3600;
+    s %= 3600 ;
+    let minutes = s / 60;
+    s %=60 ;
+
+
+    if( hours > 0){
+        return pad(hours) + ":" + pad(minutes) + ":" + pad(s);
+    } else {
+        if(minutes > 0) {
+            return pad(minutes) + ":" + pad(s);
+        } else {
+            return pad(s);
+        }
+    }
+}
+
+function indexPlaying(){
+    return listData.findIndex(function(elem){ return elem.element.classList.contains("playing")})
+}
 document.addEventListener("DOMContentLoaded", function() {
 "use strict";
 
     console.log("start");
+    list = document.getElementById('list');
+    player = document.getElementById('player');
+    loadButton = document.getElementById('loadButton');
+    urlInput = document.getElementById('urlInput');
+    listData = [];
+    playistTitle = document.querySelector('#playlist > h2');
+    removeButton = document.querySelector("#remove");
+    upButton = document.querySelector("#upButton");
+    downButton = document.querySelector("#downButton");
+    currentPlaying = null;
+    playButton = document.querySelector("#playButton");
+    prevButton = document.querySelector("#prev");
+    nextButton = document.querySelector("#next");
+    timer = document.querySelector("#timer");
+    progress = document.querySelector("#progress");
+    progressbar = document.querySelector("#progressbar");
+    
+
+    
 
     player.playing = false;
     player.autoplay = true;
-
-
-
 
     loadButton.addEventListener('click', function(e) {
         let urlString = urlInput.value;
@@ -28,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Url empty");
         }
         else {
+            localStorage.setItem('url', urlString)
             let req = new XMLHttpRequest();
             req.open("GET", "https://crossorigin.me/" + urlString);
 
@@ -47,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         let link = elem.querySelector("link").textContent;
                         let enclosure = elem.querySelector("enclosure");
 
-
                         let option = document.createElement('option');
                             option.textContent = title;
                         list.appendChild(option);
@@ -56,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             title:title,
                             link:link,
                             url:enclosure.attributes.url.value,
-                            length:enclosure.attributes.length.value,
+                            duration:enclosure.getAttribute("length"),
                             type:enclosure.attributes.type.value,
                             element:option
 
@@ -116,12 +161,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     });
-    function playNew(){
+    function playNew(index){
         if(listData.length > 0){
                     Array.from(list.querySelectorAll(".playing")).forEach(function(e){
                         e.classList.remove('playing');
                     });
-                    let firstSelected = listData.findIndex(function(elem){ return elem.element.selected});
+                    let firstSelected = null;
+
+                    if(index !== undefined){
+                        firstSelected = index
+                    }else {
+                        firstSelected = listData.findIndex(function(elem){ return elem.element.selected});
+                    }
                     if(firstSelected === -1){
                         firstSelected = 0;
                     }
@@ -132,10 +183,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     player.src = playing.url;
                     player.type = playing.type;
-                }
+        }
+
     }
-    playButton.addEventListener('click', function(e) {
-        if(!player.playing){
+    function playListener(e){
+         if(!player.playing){
             if(player.currentTime > 0){
                 player.play();
             }else {
@@ -145,11 +197,11 @@ document.addEventListener("DOMContentLoaded", function() {
             player.pause()
         }
         
-
-    });
+    }
+    playButton.addEventListener('click', playListener);
+    player.addEventListener('click', playListener);
 
     list.addEventListener('dblclick', function(e) {
-        console.log(e.target);
         e.target.selected = true;
         playNew();
     });
@@ -163,6 +215,55 @@ document.addEventListener("DOMContentLoaded", function() {
         playButton.textContent = "play";
     });
 
-   
+    player.addEventListener('ended',function(e){
+        let index = indexPlaying();
+        if(index < listData.length){
+            playNew(index+1);
+        }
+                
+    });
+
+    player.addEventListener('timeupdate', function(e){
+        if(Number.isNaN(player.duration)){
+            timer.textContent =  "Loading...";
+        }else{
+            timer.textContent =  secondToReadable(player.currentTime) + " / " + secondToReadable(player.duration);
+        }
+        progress.style.width = (player.currentTime/player.duration)*100 + "%";
+
+    });
+    progressbar.addEventListener('click', function(e){
+        if(!Number.isNaN(player.duration)){
+            let advance = e.offsetX/parseInt(getComputedStyle(progressbar).width);
+            player.currentTime = player.duration * advance;
+        }
+    });
+
+    prevButton.addEventListener('click', function(e){
+        let index = indexPlaying();
+        if(index > 0){
+            playNew(index-1);
+        }
+    });
+    nextButton.addEventListener('click', function(e){
+        let index = indexPlaying();
+        if(index < listData.length){
+            playNew(index+1);
+        }
+    });
+
+    if(localStorage.getItem("url")){
+        urlInput.value = localStorage.getItem("url");
+    }
+
+
 
 });
+/*
+- add image cov
+- add slider & time
+- add endind process
+- add justification in repositorie
+- add some design
+
+*/
