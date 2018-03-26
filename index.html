@@ -9,16 +9,19 @@
   <body>
     <main class="container">
       <h1>Best Player Ever !</h1>
+      <input type="url" name="url" id="urlInput"><button id="loadButton">Load URL</button>
+
       <div id="media">
-        <h2>No media</h2>
+        <h2 id="title">No media</h2>
         <video id="player"></video>
-        <br>
-        <div>   
-          <p id="timer"></p>
+
+        <div id="bar">   
           <div id="progressbar">
             <div id="progress"></div>
           </div>
         </div>
+        <div><p id="timer"></p></div>
+
         <button id="playButton">Play</button>
         <button id="prev">&lt;</button>
         <button id="next">&gt;</button>
@@ -32,8 +35,7 @@
         <button id="remove">Remove</button>
         <button id="upButton">up</button>
         <button id="downButton">down</button>
-        <br>
-        <input type="url" name="url" id="urlInput"><button id="loadButton">Load URL</button>
+        
       </div>
     </main>
     <script src="./script.js">

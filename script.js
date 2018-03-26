@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     console.log("start");
     let list = document.getElementById('list');
+    let title = document.getElementById('title');
     let player = document.getElementById('player');
     let loadButton = document.getElementById('loadButton');
     let urlInput = document.getElementById('urlInput');
@@ -166,6 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     player.src = playing.url;
                     player.type = playing.type;
+                    title.textContent = listData[firstSelected].title;
         }
 
     }

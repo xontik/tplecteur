@@ -1,5 +1,5 @@
 #playlist select {
-	width:800px;
+	width:50%;
 	height:300px;
 }
 
@@ -8,14 +8,24 @@
 }
 
 #progressbar {
-	width:300px;
-	height:20px;
+	width:50%;
+	height:15px;
 	background: grey;
 	padding: 0;
 }
 #progress{
 	width: 0%;
-	height:20px;
+	height:15px;
 	background: green;
 	margin:0;
+}
+
+body {
+	text-align: center;
+}
+#bar {
+	display: flex;
+}
+#bar > * {
+	margin:auto;
 }
