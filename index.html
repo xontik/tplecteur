@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>TP Lecteur multimédia</title>
+    <title>TP MediaPlayer</title>
 
   </head>
   <body>
     <main class="container">
       <h1>Best Player Ever !</h1>
       <div id="media">
-        <h2></h2>
+        <h2>No media</h2>
         <video id="player"></video>
         <br>
         <div>   
@@ -20,24 +20,23 @@
           </div>
         </div>
         <button id="playButton">Play</button>
-        <button id="prev"><</button>
-        <button id="next">></button>
-        <button>Mute</button>
+        <button id="prev">&lt;</button>
+        <button id="next">&gt;</button>
 
       </div>  
       <div id="playlist">
-        <h2></h2>
+        <h2>No Playlist</h2>
         <select multiple id="list">
         </select>
         <br>
-        <button id="remove">Supprimer</button>
+        <button id="remove">Remove</button>
         <button id="upButton">up</button>
         <button id="downButton">down</button>
         <br>
-        <input type="url" name="url" id="urlInput"><button id="loadButton">Charger URL</button>
+        <input type="url" name="url" id="urlInput"><button id="loadButton">Load URL</button>
       </div>
     </main>
-    <script type="text/javascript" src="./script.js">
+    <script src="./script.js">
     </script>
   </body>
 </html>

@@ -1,21 +1,4 @@
-// Vanilla
-/*jshint esversion: 6 */
-let list = null;
-let player = null;
-let loadButton = null;
-let urlInput = null;
-let listData = null;
-let playistTitle = null;
-let removeButton = null;
-let upButton = null;
-let downButton = null;
-let currentPlaying = null;
-let playButton = null;
-let prevButton = null; 
-let nextButton = null;
-let timer = null;
-let progress = null;
-let progressbar = null;
+
 function pad(n) {
     return (n < 10) ? ("0" + Math.trunc(n)): Math.trunc(n);
 }
@@ -38,28 +21,28 @@ function secondToReadable(s){
 }
 
 function indexPlaying(){
-    return listData.findIndex(function(elem){ return elem.element.classList.contains("playing")})
+    return listData.findIndex(function(elem){ return elem.element.classList.contains("playing");});
 }
 document.addEventListener("DOMContentLoaded", function() {
 "use strict";
 
     console.log("start");
-    list = document.getElementById('list');
-    player = document.getElementById('player');
-    loadButton = document.getElementById('loadButton');
-    urlInput = document.getElementById('urlInput');
-    listData = [];
-    playistTitle = document.querySelector('#playlist > h2');
-    removeButton = document.querySelector("#remove");
-    upButton = document.querySelector("#upButton");
-    downButton = document.querySelector("#downButton");
-    currentPlaying = null;
-    playButton = document.querySelector("#playButton");
-    prevButton = document.querySelector("#prev");
-    nextButton = document.querySelector("#next");
-    timer = document.querySelector("#timer");
-    progress = document.querySelector("#progress");
-    progressbar = document.querySelector("#progressbar");
+    let list = document.getElementById('list');
+    let player = document.getElementById('player');
+    let loadButton = document.getElementById('loadButton');
+    let urlInput = document.getElementById('urlInput');
+    let listData = [];
+    let playistTitle = document.querySelector('#playlist > h2');
+    let removeButton = document.querySelector("#remove");
+    let upButton = document.querySelector("#upButton");
+    let downButton = document.querySelector("#downButton");
+    let currentPlaying = null;
+    let playButton = document.querySelector("#playButton");
+    let prevButton = document.querySelector("#prev");
+    let nextButton = document.querySelector("#next");
+    let timer = document.querySelector("#timer");
+    let progress = document.querySelector("#progress");
+    let progressbar = document.querySelector("#progressbar");
     
 
     
@@ -73,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Url empty");
         }
         else {
-            localStorage.setItem('url', urlString)
+            localStorage.setItem('url', urlString);
             let req = new XMLHttpRequest();
             req.open("GET", "https://crossorigin.me/" + urlString);
 
@@ -85,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (req.status === 200) {
                     let xmlResponse = req.responseXML;
                     let title = xmlResponse.querySelector("channel > title").textContent;
-                    let link = xmlResponse.querySelector("channel > link").textContent
+                    let link = xmlResponse.querySelector("channel > link").textContent;
                     playistTitle.innerHTML = "<a href='" + link + "' > " + title + "</a>";
                     Array.from(xmlResponse.getElementsByTagName('item')).forEach(function(elem) {
                         
@@ -105,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             type:enclosure.attributes.type.value,
                             element:option
 
-                        }
+                        };
                         listData.push(media);
                     });
                 } else {
@@ -114,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
             };
             req.send();
         }
-    })
+    });
     removeButton.addEventListener("click", function(e) {
         listData = listData.filter(function(e) {
             if(e.element.selected){
@@ -169,9 +152,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     let firstSelected = null;
 
                     if(index !== undefined){
-                        firstSelected = index
+                        firstSelected = index;
                     }else {
-                        firstSelected = listData.findIndex(function(elem){ return elem.element.selected});
+                        firstSelected = listData.findIndex(function(elem){ return elem.element.selected;});
                     }
                     if(firstSelected === -1){
                         firstSelected = 0;
@@ -194,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 playNew();                
             } 
         }else {
-            player.pause()
+            player.pause();
         }
         
     }
@@ -217,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     player.addEventListener('ended',function(e){
         let index = indexPlaying();
-        if(index < listData.length){
+        if(index < listData.length - 1){
             playNew(index+1);
         }
                 
@@ -247,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     nextButton.addEventListener('click', function(e){
         let index = indexPlaying();
-        if(index < listData.length){
+        if(index < listData.length - 1){
             playNew(index+1);
         }
     });
@@ -261,8 +244,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 /*
 - add image cov
-- add slider & time
-- add endind process
 - add justification in repositorie
 - add some design
 
